@@ -4,6 +4,8 @@ from google.cloud import storage
 import os
 import json
 from dotenv import load_dotenv
+import vertexai
+from vertexai.generative_models import GenerativeModel
 
 load_dotenv()
 
@@ -45,3 +47,4 @@ def post_data(entry: dict):
     content["entries"].append(entry)
     blob.upload_from_string(json.dumps(content), content_type="application/json")
     return {"message": "Entrée ajoutée", "entry": entry}
+
