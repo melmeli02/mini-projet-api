@@ -1,7 +1,24 @@
 from fastapi import FastAPI
 from datetime import datetime
+from google.cloud import storage
+import os
+import json
+from dotenv import load_dotenv
+
+load_dotenv()
 
 app = FastAPI()
+
+BUCKET_NAME = os.getenv("GCS_BUCKET_NAME")
+FILE_PATH = os.getenv("GCS_FILE_PATH")
+
+from google.oauth2 import service_account
+
+def get_gcs_client():
+    credentials = service_account.Credentials.from_service_account_file(
+        r"C:\Users\treso\Documents\esme\INGE 2\data\mini-projet-api\api\cle.json"
+    )
+    return storage.Client(credentials=credentials, project="esme-projet")
 
 @app.get("/hello")
 def hello():
@@ -10,3 +27,21 @@ def hello():
 @app.get("/status")
 def status():
     return {"datetime": datetime.now().isoformat()}
+
+@app.get("/data")
+def get_data():
+    client = get_gcs_client()
+    bucket = client.bucket(BUCKET_NAME)
+    blob = bucket.blob(FILE_PATH)
+    content = blob.download_as_text()
+    return json.loads(content)
+
+@app.post("/data")
+def post_data(entry: dict):
+    client = get_gcs_client()
+    bucket = client.bucket(BUCKET_NAME)
+    blob = bucket.blob(FILE_PATH)
+    content = json.loads(blob.download_as_text())
+    content["entries"].append(entry)
+    blob.upload_from_string(json.dumps(content), content_type="application/json")
+    return {"message": "Entrée ajoutée", "entry": entry}
