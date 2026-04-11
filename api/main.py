@@ -14,13 +14,8 @@ app = FastAPI()
 BUCKET_NAME = os.getenv("GCS_BUCKET_NAME")
 FILE_PATH = os.getenv("GCS_FILE_PATH")
 
-from google.oauth2 import service_account
-
 def get_gcs_client():
-    credentials = service_account.Credentials.from_service_account_file(
-        r"C:\Users\treso\Documents\esme\INGE 2\data\mini-projet-api\api\cle.json"
-    )
-    return storage.Client(credentials=credentials, project="esme-projet")
+    return storage.Client(project="esme-projet")
 
 @app.get("/hello")
 def hello():
