@@ -49,11 +49,12 @@ def post_data(entry: dict):
 @app.get("/poem")
 def get_poem():
     try:
-        vertexai.init(project=GCP_PROJECT, location=GCP_REGION)
-        model = GenerativeModel("gemini-2.0-flash-lite-001")
+        import google.generativeai as genai
+        genai.configure(api_key=os.getenv("GEMINI_API_KEY"))
+        model = genai.GenerativeModel("gemini-1.5-flash")
         response = model.generate_content(
             "Écris un poème court et poétique en français sur la technologie et le cloud computing."
         )
         return {"poem": response.text}
     except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Erreur Vertex AI : {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Erreur Gemini : {str(e)}")
