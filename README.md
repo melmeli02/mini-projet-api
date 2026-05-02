@@ -1,3 +1,5 @@
+
+
 # Mini Projet API GCP
 
 API Python (FastAPI) déployée sur Google Cloud Run.
@@ -135,4 +137,3 @@ gcloud run deploy mini-projet-frontend \
 
 API Cloud Run : https://mini-projet-api-1047861355085.europe-west1.run.app
 Frontend Cloud Run : https://mini-projet-frontend-1047861355085.europe-west1.run.app
-Image Docker Hub : [à compléter]
