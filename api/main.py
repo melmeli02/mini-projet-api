@@ -50,7 +50,7 @@ def post_data(entry: dict):
 def get_poem():
     try:
         vertexai.init(project=GCP_PROJECT, location=GCP_REGION)
-        model = GenerativeModel("gemini-1.5-flash")
+        model = GenerativeModel("gemini-2.0-flash-001")
         response = model.generate_content(
             "Écris un poème court et poétique en français sur la technologie et le cloud computing."
         )
