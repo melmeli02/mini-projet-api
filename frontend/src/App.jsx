@@ -53,7 +53,7 @@ export default function App() {
         ) : (
           <ul style={{ lineHeight: 2, marginBottom: 32 }}>
             {data.map((entry, i) => (
-              <li key={i}>{JSON.stringify(entry)}</li>
+              <li key={i}>{entry.text}</li>
             ))}
           </ul>
         )}

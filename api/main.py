@@ -1,15 +1,22 @@
 from fastapi import FastAPI, HTTPException
+from fastapi.middleware.cors import CORSMiddleware
 from datetime import datetime
 from google.cloud import storage
 import os
 import json
 from dotenv import load_dotenv
-import vertexai
-from vertexai.generative_models import GenerativeModel
+import google.generativeai as genai
 
 load_dotenv()
 
 app = FastAPI()
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 BUCKET_NAME = os.getenv("GCS_BUCKET_NAME")
 FILE_PATH = os.getenv("GCS_FILE_PATH")
@@ -49,11 +56,11 @@ def post_data(entry: dict):
 @app.get("/poem")
 def get_poem():
     try:
-        vertexai.init(project=GCP_PROJECT, location=GCP_REGION)
-        model = GenerativeModel("gemini-2.0-flash-lite-001")
+        genai.configure(api_key=os.getenv("GEMINI_API_KEY"))
+        model = genai.GenerativeModel("gemini-2.5-flash")
         response = model.generate_content(
             "Écris un poème court et poétique en français sur la technologie et le cloud computing."
         )
         return {"poem": response.text}
     except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Erreur Vertex AI : {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Erreur Gemini : {str(e)}")
