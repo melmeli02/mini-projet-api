@@ -14,6 +14,9 @@ app = FastAPI()
 BUCKET_NAME = os.getenv("GCS_BUCKET_NAME")
 FILE_PATH = os.getenv("GCS_FILE_PATH")
 
+GCP_PROJECT = os.getenv("GCP_PROJECT", "esme-projet")
+GCP_REGION = os.getenv("GCP_REGION", "us-central1")
+
 def get_gcs_client():
     return storage.Client(project="esme-projet")
 
@@ -43,3 +46,14 @@ def post_data(entry: dict):
     blob.upload_from_string(json.dumps(content), content_type="application/json")
     return {"message": "Entrée ajoutée", "entry": entry}
 
+@app.get("/poem")
+def get_poem():
+    try:
+        vertexai.init(project=GCP_PROJECT, location=GCP_REGION)
+        model = GenerativeModel("gemini-1.5-flash")
+        response = model.generate_content(
+            "Écris un poème court et poétique en français sur la technologie et le cloud computing."
+        )
+        return {"poem": response.text}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Erreur Vertex AI : {str(e)}")
