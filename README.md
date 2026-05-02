@@ -71,11 +71,17 @@ On a développé une interface pour que tous les utilisateurs puissent interagir
 
 - FastAPI + Uvicorn pour le serveur Python
 - google-cloud-storage pour lire et écrire dans GCS
-- google-cloud-aiplatform pour appeler Vertex AI
+- google-generativeai pour appeler la Gemini API
 - React + Vite pour le frontend
 - Docker pour conteneuriser les deux applications
 - Google Cloud Run pour le déploiement
 - Git + GitHub pour le travail collaboratif en équipe
+
+**Note sur Vertex AI**
+
+Le sujet demande l'utilisation de `google-cloud-aiplatform` pour générer les poèmes via Vertex AI. Lors du développement, nous avons rencontré des limitations sur notre projet GCP : les modèles Gemini Publisher ne sont pas accessibles via l'API Vertex AI (erreur 404 "Publisher Model not found"), liées aux restrictions du compte d'essai gratuit et à l'absence d'acceptation des CGU Gemini sur Vertex AI.
+
+Nous avons donc utilisé la librairie `google-generativeai` avec la **Gemini API** (`generativelanguage.googleapis.com`), qui offre les mêmes fonctionnalités de génération de texte via Gemini 2.5 Flash. Le endpoint `GET /poem` fonctionne correctement en local et sur Cloud Run.
 
 
 ## Lancer le projet en local
