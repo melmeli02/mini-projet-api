@@ -134,6 +134,6 @@ gcloud run deploy mini-projet-frontend \
 
 
 ## Liens
-
-API Cloud Run : https://mini-projet-api-1047861355085.europe-west1.run.app
-Frontend Cloud Run : https://mini-projet-frontend-1047861355085.europe-west1.run.app
+API Cloud Run : https://mini-projet-api-1047861355085.us-central1.run.app
+Image Docker Hub : https://hub.docker.com/r/jademr/mini-projet-api
+Frontend : https://mini-projet-frontend-1047861355085.europe-west1.run.app
